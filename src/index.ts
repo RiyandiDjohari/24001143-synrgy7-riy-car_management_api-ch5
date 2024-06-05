@@ -14,7 +14,7 @@ const knexInstance = knex(config[environment]);
 Model.knex(knexInstance);
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use("/api", router);
+app.use("/api/v1", router);
 
 app.listen(port, () => {
     console.log(`[server]: Server is running at http://localhost:${port}`);
