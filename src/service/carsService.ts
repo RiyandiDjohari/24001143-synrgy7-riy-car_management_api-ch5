@@ -10,6 +10,9 @@ interface Car {
   image: string;
   capacity: number;
   description: string;
+  available: boolean;
+  availableAt: string;
+  rentPerDay: number;
   transmission: string;
   type: string;
   year: number;
@@ -49,19 +52,32 @@ export const getCarsById = async (req: Request, res: Response) => {
 export const createCar = async (req: Request, res: Response) => {
   try {
     // const { id, plate, manufacture, model, image, capacity, description, transmission, type, year, option, specs }: Car = req.body;
-    const image = await uploadImageHandler(req.file, "cars");
+    if (req.file) {
+      const image = await uploadImageHandler(req.file, "cars");
 
-    const car = await CarsModels.query().insert({
-      ...req.body,
-      id: uuidv4(),
-      image: image.secure_url,
-    });
+      const car = await CarsModels.query().insert({
+        ...req.body,
+        id: uuidv4(),
+        image: image.secure_url,
+      });
 
-    if (!car) {
-      res.status(400).json({ message: "Something Went Wrong" });
+      if (!car) {
+        res.status(400).json({ status: false, message: "Something Went Wrong" });
+      }
+
+      res.status(201).json({ status: true, message: "Create new car successfully", data: car });
+    } else {
+      const car = await CarsModels.query().insert({
+        ...req.body,
+        id: uuidv4(),
+      });
+
+      if (!car) {
+        res.status(400).json({ status: false, message: "Something Went Wrong" });
+      }
+
+      res.status(201).json({ status: true, message: "Create new car successfully", data: car });
     }
-
-    res.status(201).json({ message: "Create new car successfully", car });
   } catch (error) {
     console.log(error);
     res.status(500).json({ status: false, message: "Internal Server Error" });
@@ -117,7 +133,6 @@ export const updateCar = async (req: Request, res: Response) => {
       } else {
         res.status(404).json({ status: false, message: `Cars with id ${id} not found` });
       }
-
     }
   } catch (error) {
     console.log(error);

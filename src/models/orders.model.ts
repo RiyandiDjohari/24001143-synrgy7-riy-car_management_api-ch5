@@ -3,12 +3,14 @@ import { UsersModels } from "./users.model";
 import { CarsModels } from "./cars.model";
 
 export class OrdersModel extends Model {
-    id!: number;
+    id!: string;
     start_rent!: Date;
     finish_rent!: Date;
     status!: string;
-    user_id!: number;
+    user_id!: string;
     car_id!: string;
+    created_at!: Date;
+    updated_at!: Date;
 
     static get tableName() {
         return 'orders'

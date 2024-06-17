@@ -1,12 +1,13 @@
 import { Router } from "express";
 import { createOrder, getOrders, getOrdersById, deleteOrderById, updateOrder } from "../service/orderService";
+import { checkAuth, isAdmin } from "../middleware/auth";
 
 const router = Router();
 
-router.get("/", getOrders);
-router.get("/:id", getOrdersById);
-router.post("/", createOrder);
-router.delete("/:id", deleteOrderById);
-router.put("/:id", updateOrder);
+router.get("/", checkAuth, getOrders);
+router.get("/:id", checkAuth, getOrdersById);
+router.post("/", checkAuth, createOrder);
+router.delete("/:id", checkAuth, deleteOrderById);
+router.put("/:id", checkAuth, updateOrder);
 
 export default router;

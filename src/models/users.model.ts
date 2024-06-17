@@ -2,13 +2,14 @@ import { Model, ModelObject } from "objection";
 import { OrdersModel } from "./orders.model";
 
 export class UsersModels extends Model {
-  id!: number;
+  id!: string;
+  name!: string;
   username!: string;
   email!: string;
   password!: string;
-  image!: string;
-  rentPerDay!: number;
-  capacity!: number;
+  role!: string;
+  created_at!: Date;
+  updated_at!: Date;
 
   static get tableName() {
     return "users";

@@ -1,5 +1,7 @@
 import { Request, Response } from "express";
 import { UsersModels } from "../models/users.model";
+import { v4 as uuidv4} from "uuid";
+import bcrypt from "bcrypt";
 
 export const getUsers = async (req: Request, res: Response) => {
   const users = await UsersModels.query().withGraphFetched("orders");
@@ -23,20 +25,7 @@ export const getUsersById = async (req: Request, res: Response) => {
   }
 };
 
-export const createUser = async (req: Request, res: Response) => {
-  const payload: { username: string; email: string; password: string; role: string } = req.body;
-  const usersLength: number = (await UsersModels.query()).length;
 
-  if (payload) {
-    const user = await UsersModels.query().insert({
-      id: usersLength + 1,
-      ...payload,
-    });
-    res.status(201).json({ message: "Create new user successfully", user });
-  } else {
-    res.status(400).json({ message: "Something Went Wrong" });
-  }
-};
 
 export const deleteUserById = async (req: Request, res: Response) => {
   let id: string = req.params.id;

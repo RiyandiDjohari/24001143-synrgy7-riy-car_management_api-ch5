@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { OrdersModel } from "../models/orders.model";
+import { v4 as uuidv4 } from "uuid";
 
 export const getOrders = async (req: Request, res: Response) => {
   try {
@@ -37,13 +38,20 @@ export const getOrdersById = async (req: Request, res: Response) => {
 
 export const createOrder = async (req: Request, res: Response) => {
   try {
-    const payload: { start_rent: Date; finish_rent: Date; status: string; user_id: number; car_id: string } = req.body;
+    const payload: {
+      start_rent: Date;
+      finish_rent: Date;
+      price: number;
+      status: string;
+      user_id: string;
+      car_id: string;
+    } = req.body;
     const ordersLength: number = (await OrdersModel.query()).length;
 
     if (payload) {
       const order = await OrdersModel.query().insert({
-        id: ordersLength + 1,
-        ...payload,
+        id: uuidv4(),
+        ...payload
       });
       res.status(201).json({ status: true, message: "Create new order successfully", order });
     } else {
