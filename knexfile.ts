@@ -7,11 +7,11 @@ const config: { [key: string]: Knex.Config } = {
   development: {
     client: "postgresql",
     connection: {
-      database: "postgres",
-      user: "postgres.gwrgedsckhfraevjpweh",
-      password: "17agustus1945",
-      port: 6543,
-      host: "aws-0-us-east-1.pooler.supabase.com",
+      database: process.env.DB_NAME,
+      user: process.env.DB_USER,
+      password: process.env.DB_PASSWORD,
+      port: Number(process.env.DB_PORT),
+      host: process.env.DB_HOST,
     },
     pool: {
       min: 2,
